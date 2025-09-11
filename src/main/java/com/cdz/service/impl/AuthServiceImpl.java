@@ -3,14 +3,20 @@ package com.cdz.service.impl;
 import com.cdz.configuration.JwtProvider;
 import com.cdz.domain.UserRole;
 import com.cdz.exceptions.UserException;
+import com.cdz.mapper.UserMapper;
 import com.cdz.model.User;
 import com.cdz.payload.dto.UserDto;
 import com.cdz.payload.response.AuthResponse;
 import com.cdz.repository.UserRepository;
 import com.cdz.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +41,27 @@ public class AuthServiceImpl implements AuthService {
         newUser.setEmail(userDto.getEmail());
         newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
         newUser.setRole(userDto.getRole());
+        newUser.setFullName(userDto.getFullName());
+        newUser.setPhone(userDto.getPhone());
+        newUser.setLastLogin(LocalDateTime.now());
+        newUser.setCreatedAt(LocalDateTime.now());
+        newUser.setUpdatedAt(LocalDateTime.now());
 
+        User savedUser = userRepository.save(newUser);
 
-        return null;
+        Authentication  authentication =
+                new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String jwt = jwtProvider.generateToken(authentication);
+
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setJwt(jwt);
+        authResponse.setMessage("Registered Successfully");
+        authResponse.setUser(UserMapper.toDTO(savedUser));
+
+        return authResponse;
     }
 
     @Override
