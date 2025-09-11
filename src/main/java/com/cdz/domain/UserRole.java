@@ -1,6 +1,6 @@
 package com.cdz.domain;
 
-public enum userRole {
+public enum UserRole {
 
     ROLE_USER,
     ROLE_ADMIN,
