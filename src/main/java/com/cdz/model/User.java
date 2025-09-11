@@ -1,6 +1,6 @@
 package com.cdz.model;
 
-import com.cdz.domain.userRole;
+import com.cdz.domain.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -28,7 +28,7 @@ public class User {
     private String phone;
 
     @Column(nullable = false)
-    private userRole role;
+    private UserRole role;
 
     @Column(nullable = false)
     private String password;
