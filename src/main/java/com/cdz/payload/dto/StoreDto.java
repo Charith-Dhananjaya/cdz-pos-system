@@ -2,10 +2,11 @@ package com.cdz.payload.dto;
 
 import com.cdz.domain.StoreStatus;
 import com.cdz.model.StoreContact;
-import com.cdz.model.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToOne;
+import lombok.Data;
 
+import java.time.LocalDateTime;
+
+@Data
 public class StoreDto {
 
     private long Id;
@@ -21,5 +22,8 @@ public class StoreDto {
     private StoreStatus status;
 
     private StoreContact contact;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }
