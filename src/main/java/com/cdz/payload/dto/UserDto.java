@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class UserDto {
 
 
-    private String id;
+    private Long id;
 
     private String fullName;
 
