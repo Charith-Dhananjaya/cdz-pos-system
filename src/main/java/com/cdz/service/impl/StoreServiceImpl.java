@@ -1,8 +1,10 @@
 package com.cdz.service.impl;
 
+import com.cdz.domain.StoreStatus;
 import com.cdz.exceptions.UserException;
 import com.cdz.mapper.StoreMapper;
 import com.cdz.model.Store;
+import com.cdz.model.StoreContact;
 import com.cdz.model.User;
 import com.cdz.payload.dto.StoreDto;
 import com.cdz.repository.StoreRepository;
@@ -24,7 +26,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public StoreDto createStore(StoreDto storeDto, User user) {
 
-        Store store = StoreMapper.toEntity(storeDto,  user);
+        Store store = StoreMapper.toEntity(storeDto, user);
 
         return StoreMapper.toDTO(storeRepository.save(store));
     }
@@ -51,13 +53,39 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public StoreDto updateStore(Long id, StoreDto storeDto) {
-        return null;
+    public StoreDto updateStore(Long id, StoreDto storeDto) throws Exception {
+
+        User currentUser = userService.getCurrentUser();
+
+        Store existing = storeRepository.findByStoreAdminId(currentUser.getId());
+
+        if (existing == null) {
+            throw new Exception("Store not found...");
+        }
+
+        existing.setBrand(storeDto.getBrand());
+        existing.setDescription(storeDto.getDescription());
+
+        if (storeDto.getStoreType() != null) {
+            existing.setStoreType(storeDto.getStoreType());
+        }
+        if (storeDto.getContact() != null) {
+            StoreContact contact = StoreContact.builder()
+                    .address(storeDto.getContact().getAddress())
+                    .phone(storeDto.getContact().getPhone())
+                    .email(storeDto.getContact().getEmail())
+                    .build();
+            existing.setContact(contact);
+        }
+        Store updatedStore = storeRepository.save(existing);
+        return StoreMapper.toDTO(updatedStore);
     }
 
     @Override
-    public StoreDto deleteStore(Long id) {
-        return null;
+    public void deleteStore(Long id) throws UserException {
+
+        Store store = getStoreByAdmin();
+        storeRepository.delete(store);
     }
 
     @Override
@@ -69,5 +97,16 @@ public class StoreServiceImpl implements StoreService {
         }
 
         return StoreMapper.toDTO(currentUser.getStore());
+    }
+
+    @Override
+    public StoreDto moderateStore(Long id, StoreStatus status) throws Exception {
+        Store store = storeRepository.findById(id).orElseThrow(
+                () -> new Exception("Store not found...")
+        );
+        store.setStatus(status);
+        Store updatedStore = storeRepository.save(store);
+        return StoreMapper.toDTO(updatedStore);
+
     }
 }

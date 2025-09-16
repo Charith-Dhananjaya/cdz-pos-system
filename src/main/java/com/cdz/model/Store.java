@@ -29,7 +29,9 @@ public class Store {
 
     private String storeType;
 
+    @Enumerated(EnumType.STRING)
     private StoreStatus status;
+
 
     @Embedded
     private StoreContact contact = new StoreContact();
