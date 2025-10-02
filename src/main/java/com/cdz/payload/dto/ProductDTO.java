@@ -3,11 +3,13 @@ package com.cdz.payload.dto;
 import com.cdz.model.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 public class ProductDTO {
 
     private Long id;

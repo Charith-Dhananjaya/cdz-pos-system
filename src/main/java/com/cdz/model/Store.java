@@ -17,7 +17,7 @@ public class Store {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long Id;
+    private long id;
 
     @Column(nullable = false)
     private String brand;
