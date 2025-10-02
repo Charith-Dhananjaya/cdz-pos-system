@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class StoreDto {
 
-    private long Id;
+    private long id;
 
     private String brand;
 
