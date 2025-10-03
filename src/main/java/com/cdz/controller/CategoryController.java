@@ -26,7 +26,7 @@ public class CategoryController {
         );
     }
 
-    @GetMapping("/store/{storeId")
+    @GetMapping("/store/{storeId}")
     public ResponseEntity<List<CategoryDTO>> getCategoriesByStoreId(
             @PathVariable long storeId) {
         return ResponseEntity.ok(

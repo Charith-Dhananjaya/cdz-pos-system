@@ -24,7 +24,7 @@ public class Product {
 
     @Column(nullable = false,  unique = true)
     private String sku;
-
+// Stock Keeping Unit
     private String description;
 
     private Double mrp;
