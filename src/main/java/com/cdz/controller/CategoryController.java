@@ -46,11 +46,10 @@ public class CategoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteCategory(
-            @RequestBody CategoryDTO categoryDTO,
-            @PathVariable long id) throws Exception {
+            @PathVariable long id) {
 
         ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setMessage("category deleted successfull");
+        apiResponse.setMessage("category deleted successfully");
         return ResponseEntity.ok(
                 apiResponse
         );
